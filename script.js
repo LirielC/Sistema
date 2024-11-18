@@ -49,6 +49,10 @@ class Bibliotecario extends Pessoa {
     login(id, senha) {
         return String(this.id) === String(id) && this.senha === senha;
     }
+   
+
+    // No restante do código, as validações são chamadas em `cadastrarCliente` e `alugarLivro`.
+       
 
     cadastrarLivro(event) {
         event.preventDefault();
@@ -69,6 +73,16 @@ class Bibliotecario extends Pessoa {
             const isbn = document.getElementById("isbnAluguel").value;
             const cpf = document.getElementById("cpfAluguel").value;
             const dataDevolucao = document.getElementById("dataDevolucao").value;
+
+          if (!validarCPF(cpf)) {
+              document.getElementById("mensagemAluguel").textContent = "Erro: CPF inválido!";
+              return;
+          }
+
+          if (!validarData(dataDevolucao)) {
+              document.getElementById("mensagemAluguel").textContent = "Erro: Data de devolução inválida ou no passado!";
+              return;
+          }
 
             const livro = this.livros.find(livro => livro.isbn === isbn);
             if (!livro) {
@@ -111,6 +125,15 @@ class Bibliotecario extends Pessoa {
         const cpf = document.getElementById("cpf").value;
         const nome = document.getElementById("nome").value;
         const email = document.getElementById("email").value;
+
+          if (!validarCPF(cpf)) {
+              document.getElementById("mensagemCadastroUsuario").textContent = "Erro: CPF inválido!";
+              return;
+          }
+         if (!validarEmail(email)) {
+             document.getElementById("mensagemCadastroUsuario").textContent = "Erro: E-mail inválido!";
+             return;
+         }
 
         if (this.clientes.some(cliente => cliente.cpf === cpf)) {
             document.getElementById("mensagemCadastroUsuario").textContent = "Erro: CPF já cadastrado!";
@@ -201,6 +224,42 @@ function handleLogin(event) {
         document.getElementById("mensagemLogin").textContent = "Erro: ID ou senha inválidos!";
     }
 }
+  function validarCPF(cpf) {
+      cpf = cpf.replace(/[^\d]/g, ""); 
+
+      if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) {
+          return false;
+      }
+
+      // Função para calcular o dígito verificador
+      const calcularDigito = (base) => {
+          let soma = 0;
+          for (let i = 0; i < base.length; i++) {
+              soma += parseInt(base[i]) * (base.length + 1 - i);
+          }
+          let resto = soma % 11;
+          return resto < 2 ? 0 : 11 - resto;
+      };
+
+      const baseCPF = cpf.slice(0, 9);
+      const digito1 = calcularDigito(baseCPF); 
+      const digito2 = calcularDigito(baseCPF + digito1); 
+
+      return digito1 === parseInt(cpf[9]) && digito2 === parseInt(cpf[10]);
+  }
+
+  function validarData(data) {
+      const hoje = new Date();
+      const dataInserida = new Date(data);
+      return dataInserida >= hoje;
+  }
+  function validarEmail(email) {
+      // Expressão regular para validar e-mails
+      const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      return regexEmail.test(email);
+  }
+
 
 // Alternar entre seções esse aqui tava dando bug aí troquei.
 //function showSection(sectionId) {
@@ -243,8 +302,18 @@ function showSection(sectionId) {
         document.getElementById("cpfAluguel").value = "";
         document.getElementById("dataDevolucao").value = "";
         document.getElementById("mensagemAluguel").textContent = "";
+     
+        
+      }
+    else if (sectionId === "consultarUsuario") {
+        document.getElementById("consultaUsuario").value = ""; // Limpa o campo de busca
+        document.getElementById("resultadosUsuarios").innerHTML = ""; // Limpa os resultados da consulta
+        document.getElementById("historicoUsuario").classList.add("hidden"); // Oculta o histórico de alugueis
+        document.getElementById("historicoAlugueis").innerHTML = ""; // Limpa o histórico de alugueis
     }
-}
+    
+    }
+
 
 
 
