@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
+    <title>Sistema de Biblioteca</title>
+    <style>
+        body, h1, h2, h3, h4, h5 {
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            font-size: 16px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .w3-main {
+            margin-left: 340px;
+            margin-right: 40px;
+        }
+
+        .w3-sidebar {
+            z-index: 3;
+            width: 300px;
+            font-weight: bold;
+        }
+
+        .w3-card {
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="w3-sidebar w3-red w3-collapse w3-top w3-large w3-padding" id="mySidebar">
+    <br>
+    <div class="w3-container">
+        <h3 class="w3-padding-64"><b>Biblioteca</b></h3>
+    </div>
+    <div class="w3-bar-block">
+        <a href="#" onclick="showSection('menu')" class="w3-bar-item w3-button w3-hover-white">Menu Principal</a>
+        <a href="#" onclick="showSection('cadastrarLivro')" class="w3-bar-item w3-button w3-hover-white">Cadastrar Livro</a>
+        <a href="#" onclick="showSection('consultarLivro')" class="w3-bar-item w3-button w3-hover-white">Consultar Livro</a>
+        <a href="#" onclick="showSection('cadastrarUsuario')" class="w3-bar-item w3-button w3-hover-white">Cadastrar Usuário</a>
+        <a href="#" onclick="showSection('consultarUsuario')" class="w3-bar-item w3-button w3-hover-white">Consultar Usuário</a>
+        <a href="#" onclick="showSection('alugarLivro')" class="w3-bar-item w3-button w3-hover-white">Alugar Livro</a>
+        <a href="#" onclick="bibliotecario.verLivrosAlugados(); showSection('verLivrosAlugados')" class="w3-bar-item w3-button w3-hover-white">Livros Alugados</a>
+        <a href="#" onclick="logout()" class="w3-bar-item w3-button w3-hover-white">Sair</a>
+    </div>
+</nav>
+
+<header class="w3-container w3-top w3-hide-large w3-red w3-xlarge w3-padding">
+    <a href="javascript:void(0)" class="w3-button w3-red w3-margin-right" onclick="w3_open()">☰</a>
+    <span>Biblioteca</span>
+</header>
+
+<div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor:pointer" id="myOverlay"></div>
+
+<div class="w3-main">
+
+    <section id="login">
+        <div class="w3-container" style="margin-top:75px">
+            <h1 class="w3-jumbo"><b>Bem-vindo ao Sistema</b></h1>
+            <h2 class="w3-xxxlarge w3-text-red"><b>Login</b></h2>
+            <hr style="width:50px;border:5px solid red" class="w3-round">
+            <form class="w3-container w3-card-4" onsubmit="handleLogin(event)">
+                <label for="loginId">ID:</label>
+                <input type="text" id="loginId" class="w3-input w3-border" required>
+                <label for="loginSenha">Senha:</label>
+                <input type="password" id="loginSenha" class="w3-input w3-border" required>
+                <button type="submit" class="w3-button w3-red w3-margin-top">Entrar</button>
+            </form>
+            <p id="mensagemLogin" class="w3-text-red"></p>
+        </div>
+    </section>
+
+    <section id="menu" class="hidden">
+        <div class="w3-container" style="margin-top:75px">
+            <h1 class="w3-jumbo"><b>Home</b></h1>
+            <h2 class="w3-xxxlarge w3-text-red"><b>Escolha uma opção</b></h2>
+            <hr style="width:50px;border:5px solid red" class="w3-round">
+        </div>
+    </section>
+    <section id="cadastrarLivro" class="hidden">
+        <div class="w3-container" style="margin-top:75px">
+            <h1 class="w3-xxxlarge w3-text-red"><b>Cadastrar Livro</b></h1>
+            <hr style="width:50px;border:5px solid red" class="w3-round">
+            <form class="w3-container w3-card-4" onsubmit="bibliotecario.cadastrarLivro(event)">
+                <label for="isbn">ISBN:</label>
+                <input type="text" id="isbn" class="w3-input w3-border" required>
+                <label for="titulo">Título:</label>
+                <input type="text" id="titulo" class="w3-input w3-border" required>
+                <label for="autor">Autor:</label>
+                <input type="text" id="autor" class="w3-input w3-border" required>
+                <button type="submit" class="w3-button w3-red w3-margin-top">Cadastrar</button>
+            </form>
+            <p id="mensagemCadastroLivro" class="w3-text-red"></p>
+        </div>
+    </section>
+
+
+    <section id="consultarLivro" class="hidden">
+        <div class="w3-container" style="margin-top:75px">
+            <h1 class="w3-xxxlarge w3-text-red"><b>Consultar Livro</b></h1>
+            <hr style="width:50px;border:5px solid red" class="w3-round">
+            <input type="text" id="consultaLivro" class="w3-input w3-border" placeholder="Buscar por ISBN, Título ou Autor">
+            <button onclick="bibliotecario.consultarLivro()" class="w3-button w3-red w3-margin-top">Buscar</button>
+            <ul id="resultadosLivros" class="w3-ul w3-border"></ul>
+        </div>
+    </section>
+
+    <section id="cadastrarUsuario" class="hidden">
+        <div class="w3-container" style="margin-top:75px">
+            <h1 class="w3-xxxlarge w3-text-red"><b>Cadastrar Usuário</b></h1>
+            <hr style="width:50px;border:5px solid red" class="w3-round">
+            <form class="w3-container w3-card-4" onsubmit="bibliotecario.cadastrarCliente(event)">
+                <label for="cpf">CPF:</label>
+                <input type="text" id="cpf" class="w3-input w3-border" required>
+                <label for="nome">Nome:</label>
+                <input type="text" id="nome" class="w3-input w3-border" required>
+                <label for="email">E-mail:</label>
+                <input type="email" id="email" class="w3-input w3-border" required>
+                <button type="submit" class="w3-button w3-red w3-margin-top">Cadastrar</button>
+            </form>
+            <p id="mensagemCadastroUsuario" class="w3-text-red"></p>
+        </div>
+    </section>
+
+    <!-- Consulta de  Usuário, dá também para ver o histórico de aluguel dele -->
+    <section id="consultarUsuario" class="hidden">
+        <div class="w3-container" style="margin-top:75px">
+            <h1 class="w3-xxxlarge w3-text-red"><b>Consultar Usuário</b></h1>
+            <hr style="width:50px;border:5px solid red" class="w3-round">
+            <input type="text" id="consultaUsuario" class="w3-input w3-border" placeholder="Buscar por CPF, Nome ou E-mail">
+            <button onclick="bibliotecario.consultarCliente()" class="w3-button w3-red w3-margin-top">Buscar</button>
+            <ul id="resultadosUsuarios" class="w3-ul w3-border"></ul>
+            <div id="historicoUsuario" class="hidden">
+                <h3>Histórico de Aluguéis</h3>
+                <ul id="historicoAlugueis" class="w3-ul w3-border"></ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Aluguel de liro -->
+    <section id="alugarLivro" class="hidden">
+        <div class="w3-container" style="margin-top:75px">
+            <h1 class="w3-xxxlarge w3-text-red"><b>Alugar Livro</b></h1>
+            <hr style="width:50px;border:5px solid red" class="w3-round">
+            <form class="w3-container w3-card-4" onsubmit="bibliotecario.alugarLivro(event)">
+                <label for="isbnAluguel">ISBN do Livro:</label>
+                <input type="text" id="isbnAluguel" class="w3-input w3-border" required>
+                <label for="cpfAluguel">CPF do Cliente:</label>
+                <input type="text" id="cpfAluguel" class="w3-input w3-border" required>
+                <label for="dataDevolucao">Data de Devolução:</label>
+                <input type="date" id="dataDevolucao" class="w3-input w3-border" required>
+                <button type="submit" class="w3-button w3-red w3-margin-top">Alugar</button>
+            </form>
+            <p id="mensagemAluguel" class="w3-text-red"></p>
+        </div>
+    </section>
+
+    <!-- Ver livros que foram alugados -->
+    <section id="verLivrosAlugados" class="hidden">
+        <div class="w3-container" style="margin-top:75px">
+            <h1 class="w3-xxxlarge w3-text-red"><b>Livros Alugados</b></h1>
+            <hr style="width:50px;border:5px solid red" class="w3-round">
+            <ul id="resultadosLivrosAlugados" class="w3-ul w3-border"></ul>
+        </div>
+    </section>
+</div>
+
+<script>
+    function w3_open() {
+        document.getElementById("mySidebar").style.display = "block";
+        document.getElementById("myOverlay").style.display = "block";
+    }
+
+    function w3_close() {
+        document.getElementById("mySidebar").style.display = "none";
+        document.getElementById("myOverlay").style.display = "none";
+    }
+
+    function showSection(sectionId) {
+        document.querySelectorAll("section").forEach(section => section.classList.add("hidden"));
+        document.getElementById(sectionId).classList.remove("hidden");
+    }
+
+    function logout() {
+        showSection("login");
+    }
+</script>
+<script src="script.js"></script>
+</body>
+</html>
