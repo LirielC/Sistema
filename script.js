@@ -11,13 +11,13 @@ class Pessoa {
     }
 
     login() {
-        throw new Error("Método 'login' deve ser implementado pelas classes derivadas.");
+        throw new Error("Método 'login' deve ser implementado pelas classes filhas.");
     }
 }
 
 class Cliente extends Pessoa {
     constructor(cpf, nome, email) {
-        super(nome, email); // Chama o construtor da superclasse
+        super(nome, email); 
         this.cpf = cpf;
     } 
 
@@ -51,7 +51,6 @@ class Bibliotecario extends Pessoa {
     }
    
 
-    // No restante do código, as validações são chamadas em `cadastrarCliente` e `alugarLivro`.
        
 
     cadastrarLivro(event) {
@@ -306,10 +305,10 @@ function showSection(sectionId) {
         
       }
     else if (sectionId === "consultarUsuario") {
-        document.getElementById("consultaUsuario").value = ""; // Limpa o campo de busca
-        document.getElementById("resultadosUsuarios").innerHTML = ""; // Limpa os resultados da consulta
-        document.getElementById("historicoUsuario").classList.add("hidden"); // Oculta o histórico de alugueis
-        document.getElementById("historicoAlugueis").innerHTML = ""; // Limpa o histórico de alugueis
+        document.getElementById("consultaUsuario").value = ""; 
+        document.getElementById("resultadosUsuarios").innerHTML = ""; 
+        document.getElementById("historicoUsuario").classList.add("hidden"); 
+        document.getElementById("historicoAlugueis").innerHTML = ""; 
     }
     
     }
