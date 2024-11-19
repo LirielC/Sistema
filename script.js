@@ -1,5 +1,5 @@
 let isLoggedIn = false;
-//JavaScript não tem diretamente o conceito de classe abstrata, mas podemos simular
+
 class Pessoa {
     constructor(nome, email) {
         if (this.constructor === Pessoa) {
@@ -21,10 +21,10 @@ class Cliente extends Pessoa {
         this.cpf = cpf;
     } 
 
-    //Tentando aplicar um polimorfismo aqui 
+    
 
     login(cpf) {
-        return this.cpf === cpf; //adicionado apesar de cliente não poder realizar o login no sistema
+        return this.cpf === cpf; 
     }
 }
 
@@ -60,11 +60,11 @@ class Bibliotecario extends Pessoa {
         const autor = document.getElementById("autor").value;
 
         if (this.livros.some(livro => livro.isbn === isbn)) {
-            document.getElementById("mensagemCadastroLivro").textContent = "Erro: ISBN já cadastrado!";
+            document.getElementById("mensagemCadastroLivro").textContent = "Erro: ISBN já foi caddastrado";
         } else {
             const novoLivro = new Livro(isbn, titulo, autor);
             this.livros.push(novoLivro);
-            document.getElementById("mensagemCadastroLivro").textContent = "Livro cadastrado com sucesso!";
+            document.getElementById("mensagemCadastroLivro").textContent = "Livro cadastrado com sucesso";
         }
     }
       alugarLivro(event) {
@@ -74,34 +74,34 @@ class Bibliotecario extends Pessoa {
             const dataDevolucao = document.getElementById("dataDevolucao").value;
 
           if (!validarCPF(cpf)) {
-              document.getElementById("mensagemAluguel").textContent = "Erro: CPF inválido!";
+              document.getElementById("mensagemAluguel").textContent = "Erro: CPF inválido ou digitado incorretamente";
               return;
           }
 
           if (!validarData(dataDevolucao)) {
-              document.getElementById("mensagemAluguel").textContent = "Erro: Data de devolução inválida ou no passado!";
+              document.getElementById("mensagemAluguel").textContent = "Erro: Data de devolução inválida verifique novamente";
               return;
           }
 
             const livro = this.livros.find(livro => livro.isbn === isbn);
             if (!livro) {
-                document.getElementById("mensagemAluguel").textContent = "Erro: Livro não encontrado!";
+                document.getElementById("mensagemAluguel").textContent = "Erro: Livro não encontrado";
                 return;
             }
 
             const cliente = this.clientes.find(cliente => cliente.cpf === cpf);
             if (!cliente) {
-                document.getElementById("mensagemAluguel").textContent = "Erro: Cliente não encontrado!";
+                document.getElementById("mensagemAluguel").textContent = "Erro: Cliente não encontrado no sistema";
                 return;
             }
 
             if (this.livrosAlugados.some(aluguel => aluguel.livro.isbn === isbn)) {
-                document.getElementById("mensagemAluguel").textContent = "Erro: Livro já está alugado!";
+                document.getElementById("mensagemAluguel").textContent = "Erro: Livro já foi alugado";
                 return;
             }
 
             this.livrosAlugados.push({ livro, cliente, dataDevolucao });
-            document.getElementById("mensagemAluguel").textContent = "Livro alugado com sucesso!";
+            document.getElementById("mensagemAluguel").textContent = "Livro alugado com sucesso";
         }
     
 
@@ -126,20 +126,20 @@ class Bibliotecario extends Pessoa {
         const email = document.getElementById("email").value;
 
           if (!validarCPF(cpf)) {
-              document.getElementById("mensagemCadastroUsuario").textContent = "Erro: CPF inválido!";
+              document.getElementById("mensagemCadastroUsuario").textContent = "Erro: CPF inválido verifique novament";
               return;
           }
          if (!validarEmail(email)) {
-             document.getElementById("mensagemCadastroUsuario").textContent = "Erro: E-mail inválido!";
+             document.getElementById("mensagemCadastroUsuario").textContent = "Erro: E-mail inválido, verifique novamente";
              return;
          }
 
         if (this.clientes.some(cliente => cliente.cpf === cpf)) {
-            document.getElementById("mensagemCadastroUsuario").textContent = "Erro: CPF já cadastrado!";
+            document.getElementById("mensagemCadastroUsuario").textContent = "Erro: CPF já encontra-se em nosso sistema";
         } else {
             const novoCliente = new Cliente(cpf, nome, email);
             this.clientes.push(novoCliente);
-            document.getElementById("mensagemCadastroUsuario").textContent = "Usuário cadastrado com sucesso!";
+            document.getElementById("mensagemCadastroUsuario").textContent = "Usuário cadastrado";
         }
     }
 
@@ -180,7 +180,7 @@ class Bibliotecario extends Pessoa {
              ).join("");
          }
      }
-                  //historico de alugueis implementado usando cpf como 'chave'
+                 
     exibirHistoricoAlugueis(cpf) {
         const historicoDiv = document.getElementById("historicoUsuario");
         const historicoUl = document.getElementById("historicoAlugueis");
@@ -203,10 +203,10 @@ class Bibliotecario extends Pessoa {
     }
 }
 
-// Criação do objeto bibliotecário para logar no sistema
-const bibliotecario = new Bibliotecario(1, "Admin", "admin@example.com", "admin123");
 
-// Função de login
+const bibliotecario = new Bibliotecario(1200, "Admin", "admin@example.com", "admin123");
+
+
 function handleLogin(event) {
     event.preventDefault();
     const id = document.getElementById("loginId").value.trim();
@@ -230,7 +230,6 @@ function handleLogin(event) {
           return false;
       }
 
-      // Função para calcular o dígito verificador
       const calcularDigito = (base) => {
           let soma = 0;
           for (let i = 0; i < base.length; i++) {
@@ -253,29 +252,20 @@ function handleLogin(event) {
       return dataInserida >= hoje;
   }
   function validarEmail(email) {
-      // Expressão regular para validar e-mails
+      
       const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
       return regexEmail.test(email);
   }
 
 
-// Alternar entre seções esse aqui tava dando bug aí troquei.
-//function showSection(sectionId) {
-    //document.querySelectorAll("section").forEach(section => section.classList.add("hidden"));
-    //document.getElementById(sectionId).classList.remove("hidden");
-//}
-/*function showSection(sectionId) {
-    if (!isLoggedIn && sectionId !== "login") {
-        alert("Faça login para acessar esta funcionalidade.");
-        return;
-    }
+
 
 
     document.querySelectorAll("section").forEach(section => section.classList.add("hidden"));
     document.getElementById(sectionId).classList.remove("hidden");
 }
-*/
+
 function showSection(sectionId) {
     if (!isLoggedIn && sectionId !== "login") {
         alert("Faça login para acessar esta funcionalidade.");
@@ -285,7 +275,7 @@ function showSection(sectionId) {
     document.querySelectorAll("section").forEach(section => section.classList.add("hidden"));
     document.getElementById(sectionId).classList.remove("hidden");
 
-    // Limpar o campo de formulário ao mudar de secão, era algo que não tinha antes ai adicionei
+   
     if (sectionId === "cadastrarLivro") {
         document.getElementById("isbn").value = "";
         document.getElementById("titulo").value = "";
@@ -316,9 +306,9 @@ function showSection(sectionId) {
 
 
 
-// Logout
+
 function logout() {
-    isLoggedIn = false; // Redefine o estado de login para falso, o bibliotecário não pode fazer mais nada sem logar.
+    isLoggedIn = false; 
     showSection("login");
     alert("Você foi desconectado.");
 }
