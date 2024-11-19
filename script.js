@@ -60,7 +60,7 @@ class Bibliotecario extends Pessoa {
         const autor = document.getElementById("autor").value;
 
         if (this.livros.some(livro => livro.isbn === isbn)) {
-            document.getElementById("mensagemCadastroLivro").textContent = "Erro: ISBN já foi caddastrado";
+            document.getElementById("mensagemCadastroLivro").textContent = "Erro: ISBN já foi cadastrado";
         } else {
             const novoLivro = new Livro(isbn, titulo, autor);
             this.livros.push(novoLivro);
@@ -126,7 +126,7 @@ class Bibliotecario extends Pessoa {
         const email = document.getElementById("email").value;
 
           if (!validarCPF(cpf)) {
-              document.getElementById("mensagemCadastroUsuario").textContent = "Erro: CPF inválido verifique novament";
+              document.getElementById("mensagemCadastroUsuario").textContent = "Erro: CPF inválido verifique novamente";
               return;
           }
          if (!validarEmail(email)) {
@@ -220,7 +220,7 @@ function handleLogin(event) {
         showSection("menu");
         document.getElementById("mensagemLogin").textContent = "";
     } else {
-        document.getElementById("mensagemLogin").textContent = "Erro: ID ou senha inválidos!";
+        document.getElementById("mensagemLogin").textContent = "Erro: ID ou senha inválidos";
     }
 }
   function validarCPF(cpf) {
