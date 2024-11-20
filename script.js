@@ -204,7 +204,7 @@ class Bibliotecario extends Pessoa {
 }
 
 
-const bibliotecario = new Bibliotecario(1200, "Luke Dunphy", "admin@gmail.com", "admin123");
+const bibliotecario = new Bibliotecario(1, "Luke Dunphy", "admin@gmail.com", "admin123");
 
 
 function handleLogin(event) {
