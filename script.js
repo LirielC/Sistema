@@ -23,10 +23,10 @@ class Cliente extends Pessoa {
 
     
 
-    login(cpf) {
+    /* login(cpf) {
         return this.cpf === cpf; 
     }
-}
+} */
 
 class Livro {
     constructor(isbn, titulo, autor) {
